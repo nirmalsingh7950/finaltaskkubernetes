@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql8-service
+  namespace: kube-system
+  labels:
+    app: mysql8
+spec:
+  selector:
+    app: mysql8
+  # type: NodePort
+  ports:
+  - port: 3306
+    protocol: TCP
+  

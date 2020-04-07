@@ -1,0 +1,5 @@
+Admin page :
+http://192.168.136.4:8080/dashboard/
+
+web page:
+192.168.1.103 traefik-ui.kubeadm

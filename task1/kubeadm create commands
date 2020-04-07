@@ -1,0 +1,48 @@
+
+
+sudo su
+
+swapoff -a
+
+exit
+
+
+sudo kubeadm init --kubernetes-version=v1.18.0 --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=192.168.1.103 --ignore-preflight-errors=IsPrivilegedUser,preflight 
+###########################
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm join 192.168.1.103:6443 --token mf90hk.le8f2u187q0bql0m \
+    --discovery-token-ca-cert-hash sha256:ea1f9522a1ae73849336de6587123fd7efcc867f385d3f46a2e4cbae57ffb473 \
+    --control-plane 
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.1.103:6443 --token mf90hk.le8f2u187q0bql0m \
+    --discovery-token-ca-cert-hash sha256:ea1f9522a1ae73849336de6587123fd7efcc867f385d3f46a2e4cbae57ffb473 
+
+
+########################
+
+
+### create a pod network
+ kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+
+
+
+# By default, your cluster will not schedule Pods on the control-plane node for security reasons. If you want to be able to schedule Pods on the control-plane node, for example for a single-machine Kubernetes cluster for development, run:
+
+kubectl taint nodes --all node-role.kubernetes.io/master-
